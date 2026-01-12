@@ -110,8 +110,18 @@ router.get('/:id/balance', async (req, res) => {
         const group = await Group.findById(req.params.id);
         if (!group) return res.status(404).json({ error: 'Group not found' });
 
+        // Check cache using timestamp
+        if (group.debtsLastUpdated && group.cachedDebts) {
+            return res.json({ debts: group.cachedDebts });
+        }
+
         const expenses = await Expense.find({ groupId: req.params.id });
         const debts = simplifyDebts(expenses, group.participants);
+
+        // Update cache
+        group.cachedDebts = debts;
+        group.debtsLastUpdated = new Date();
+        await group.save();
 
         res.json({ debts });
     } catch (err) {

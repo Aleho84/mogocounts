@@ -30,6 +30,10 @@ router.post('/', [
             involved
         });
         await expense.save();
+
+        // Invalidate Group Cache
+        await require('../models/Group').findByIdAndUpdate(groupId, { $unset: { debtsLastUpdated: 1 } });
+
         res.json(expense);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -56,6 +60,11 @@ router.put('/:id', [
             { new: true }
         );
         if (!expense) return res.status(404).json({ error: 'Expense not found' });
+
+        // Invalidate Group Cache (using expense.groupId which wasn't changed, or fetching it if needed)
+        // Since we did findByIdAndUpdate, 'expense' is the new doc (new: true).
+        await require('../models/Group').findByIdAndUpdate(expense.groupId, { $unset: { debtsLastUpdated: 1 } });
+
         res.json(expense);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -67,6 +76,10 @@ router.delete('/:id', async (req, res) => {
     try {
         const expense = await Expense.findByIdAndDelete(req.params.id);
         if (!expense) return res.status(404).json({ error: 'Expense not found' });
+
+        // Invalidate Group Cache
+        await require('../models/Group').findByIdAndUpdate(expense.groupId, { $unset: { debtsLastUpdated: 1 } });
+
         res.json({ message: 'Expense deleted' });
     } catch (err) {
         res.status(500).json({ error: err.message });

@@ -17,7 +17,13 @@ const GroupSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    cachedDebts: [{
+        from: String,
+        to: String,
+        amount: Number
+    }],
+    debtsLastUpdated: Date
 });
 
 module.exports = mongoose.model('Group', GroupSchema);
