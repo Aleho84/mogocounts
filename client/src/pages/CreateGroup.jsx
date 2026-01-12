@@ -6,6 +6,8 @@ import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import Card from '../components/ui/card';
 
+import { PageTransition } from '../components/ui/PageTransition';
+
 const CreateGroup = () => {
     const [title, setTitle] = useState('');
     const [username, setUsername] = useState('');
@@ -42,7 +44,7 @@ const CreateGroup = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900 flex flex-col justify-center p-6 relative overflow-hidden">
+        <PageTransition className="min-h-screen bg-slate-900 flex flex-col justify-center p-6 relative overflow-hidden">
             {/* Background Decorations */}
             <div className="absolute top-0 left-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-0 right-0 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
@@ -144,7 +146,7 @@ const CreateGroup = () => {
                     Sin necesidad de registro. Simple y rápido.
                 </p>
             </div>
-        </div>
+        </PageTransition>
     );
 };
 

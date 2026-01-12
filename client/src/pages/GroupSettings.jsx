@@ -5,6 +5,8 @@ import { ArrowLeft, Users, Save, Trash2, Plus, Edit2 } from 'lucide-react';
 import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import Card from '../components/ui/card';
+import { PageTransition } from '../components/ui/PageTransition';
+import { toast } from 'sonner';
 
 const GroupSettings = () => {
     const { id } = useParams();
@@ -26,20 +28,35 @@ const GroupSettings = () => {
 
     const handleUpdateTitle = async () => {
         if (title.trim() === '') return;
-        await updateGroup(id, title);
-        setIsEditingTitle(false);
+        try {
+            await updateGroup(id, title);
+            setIsEditingTitle(false);
+            toast.success('Nombre del grupo actualizado');
+        } catch (error) {
+            toast.error('Error al actualizar nombre');
+        }
     };
 
     const handleAddParticipant = async (e) => {
         e.preventDefault();
         if (newParticipant.trim() === '') return;
-        await addParticipant(id, newParticipant);
-        setNewParticipant('');
+        try {
+            await addParticipant(id, newParticipant);
+            setNewParticipant('');
+            toast.success(`${newParticipant} agregado al grupo`);
+        } catch (error) {
+            toast.error('Error al agregar participante');
+        }
     };
 
     const handleRemoveParticipant = async (name) => {
         if (window.confirm(`¿Seguro que quieres eliminar a ${name} del grupo?`)) {
-            await removeParticipant(id, name);
+            try {
+                await removeParticipant(id, name);
+                toast.success(`${name} eliminado del grupo`);
+            } catch (error) {
+                toast.error('Error al eliminar participante');
+            }
         }
     };
 

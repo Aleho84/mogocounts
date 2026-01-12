@@ -5,6 +5,9 @@ import { Share2, Users, Calendar, ArrowLeft, UserCircle, LogOut, Home, Pencil, T
 import Card from '../components/ui/card';
 import Button from '../components/ui/button';
 
+import { PageTransition } from '../components/ui/PageTransition';
+import { toast } from 'sonner';
+
 const ExpensesList = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -34,7 +37,7 @@ const ExpensesList = () => {
 
     const copyLink = () => {
         navigator.clipboard.writeText(window.location.href);
-        alert('Link copiado!');
+        toast.success('¡Enlace copiado al portapapeles!');
     };
 
     if (!currentGroup) return (
@@ -46,7 +49,7 @@ const ExpensesList = () => {
     // Modal de Selección de Usuario
     if (showUserSelect) {
         return (
-            <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-6 relative">
+            <PageTransition className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-6 relative">
                 <div className="absolute top-0 left-0 w-full h-full bg-slate-900/50 backdrop-blur-sm z-0"></div>
                 <div className="relative z-10 w-full max-w-md">
                     <h2 className="text-3xl font-display font-bold text-white mb-2 text-center">¿Quién eres?</h2>
@@ -74,12 +77,12 @@ const ExpensesList = () => {
                         </Button>
                     </div>
                 </div>
-            </div>
+            </PageTransition>
         );
     }
 
     return (
-        <div className="min-h-screen pb-32">
+        <PageTransition className="min-h-screen pb-32">
             {/* Header / Banner */}
             <div className="relative bg-gradient-to-b from-indigo-900/20 to-slate-900 pt-6 pb-6 px-6 rounded-b-[3rem] border-b border-indigo-500/10">
                 {/* Top Nav */}
@@ -167,10 +170,15 @@ const ExpensesList = () => {
                                         {confirmDeleteId === expense._id ? (
                                             <>
                                                 <button
-                                                    onClick={(e) => {
+                                                    onClick={async (e) => {
                                                         e.stopPropagation();
-                                                        deleteExpense(expense._id, id);
-                                                        setConfirmDeleteId(null);
+                                                        try {
+                                                            await deleteExpense(expense._id, id);
+                                                            toast.success('Gasto eliminado');
+                                                            setConfirmDeleteId(null);
+                                                        } catch (err) {
+                                                            toast.error('Error al eliminar');
+                                                        }
                                                     }}
                                                     className="p-1.5 text-white bg-rose-500 rounded-lg shadow-lg hover:bg-rose-600 transition-colors animate-fade-in"
                                                 >
@@ -212,7 +220,7 @@ const ExpensesList = () => {
                     ))
                 )}
             </div>
-        </div>
+        </PageTransition>
     );
 };
 

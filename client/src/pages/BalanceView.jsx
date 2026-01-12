@@ -5,6 +5,8 @@ import { MoveRight, ArrowLeft } from 'lucide-react';
 import Card from '../components/ui/card';
 import Button from '../components/ui/button';
 
+import { PageTransition } from '../components/ui/PageTransition';
+
 const BalanceView = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -18,7 +20,7 @@ const BalanceView = () => {
     }, [id]);
 
     return (
-        <div className="min-h-screen bg-slate-900 pb-24">
+        <PageTransition className="min-h-screen bg-slate-900 pb-24">
             {/* Header */}
             <div className="p-6 flex items-center">
                 <Button
@@ -94,7 +96,7 @@ const BalanceView = () => {
                     </p>
                 </div>
             </div>
-        </div>
+        </PageTransition>
     );
 };
 

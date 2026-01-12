@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { ArrowLeft, Check, AlignLeft, Users, Trash2 } from 'lucide-react';
+import { ArrowLeft, AlignLeft, Users, Check } from 'lucide-react';
 import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import Card from '../components/ui/card';
+import { PageTransition } from '../components/ui/PageTransition';
+import { toast } from 'sonner';
 
 const AddExpense = () => {
     const { id } = useParams();
@@ -65,7 +67,7 @@ const AddExpense = () => {
         if (!amount || !description || !payer) return;
 
         if (involved.length === 0) {
-            alert('Debes seleccionar al menos una persona para dividir el gasto.');
+            toast.error('Debes seleccionar al menos una persona para dividir el gasto.');
             return;
         }
 
@@ -77,19 +79,24 @@ const AddExpense = () => {
             involved: involved
         };
 
-        if (isEditing) {
-            await updateExpense(expenseToEdit._id, expenseData);
-        } else {
-            await addExpense(expenseData);
+        try {
+            if (isEditing) {
+                await updateExpense(expenseToEdit._id, expenseData);
+                toast.success('Gasto actualizado correctamente');
+            } else {
+                await addExpense(expenseData);
+                toast.success('Gasto creado exitosamente');
+            }
+            navigate(`/group/${id}/expenses`);
+        } catch (error) {
+            toast.error('Ocurrió un error al guardar el gasto');
         }
-
-        navigate(`/group/${id}/expenses`);
     };
 
     if (!currentGroup) return <div className="p-4 text-center text-slate-400">Cargando...</div>;
 
     return (
-        <div className="min-h-screen bg-slate-900 pb-10">
+        <PageTransition className="min-h-screen bg-slate-900 pb-10">
             {/* Split Modal */}
             {showSplitModal && (
                 <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center">
@@ -245,7 +252,7 @@ const AddExpense = () => {
                 </div>
 
             </form>
-        </div>
+        </PageTransition>
     );
 };
 
