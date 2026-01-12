@@ -18,7 +18,9 @@ mongoose.connect(MONGODB_URI)
     .catch(err => console.error('MongoDB Connection Error:', err));
 
 // Routes
-app.use('/api', require('./routes/api'));
+// Routes
+app.use('/api/groups', require('./routes/groups'));
+app.use('/api/expenses', require('./routes/expenses'));
 
 // Basic Route
 app.get('/', (req, res) => {
