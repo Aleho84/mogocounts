@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { Users, ArrowRight, Wallet, Plus, X } from 'lucide-react';
+import { Users, ArrowRight, Plus, X } from 'lucide-react';
 import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import Card from '../components/ui/card';
@@ -52,13 +52,13 @@ const CreateGroup = () => {
             <div className="max-w-md mx-auto w-full relative z-10">
                 <div className="text-center mb-8 animate-slide-up">
                     <div className="inline-flex items-center justify-center p-4 bg-indigo-500/10 rounded-2xl mb-6 shadow-xl shadow-indigo-500/10 ring-1 ring-indigo-500/20">
-                        <Wallet size={40} className="text-indigo-400" />
+                        <img src="/logo.png" alt="Logo" className="w-[120px] h-[120px] object-contain" />
                     </div>
                     <h1 className="text-4xl font-display font-bold text-white mb-3 tracking-tight">
-                        Coco<span className="text-indigo-400">Counts</span>
+                        Mogo<span className="text-indigo-400">Counts</span>
                     </h1>
                     <p className="text-slate-400 text-lg leading-relaxed">
-                        Divide gastos con amigos<br />sin perder a ninguno en el camino.
+                        Tan fácil de usar que hasta el mas retrasado de tu amigo lo va a manejar sin problemas.
                     </p>
                 </div>
 
