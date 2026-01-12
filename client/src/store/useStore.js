@@ -1,9 +1,10 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-export const useStore = create((set) => ({
+export const useStore = create(persist((set) => ({
     currentGroup: null,
     expenses: [],
     loading: false,
@@ -145,4 +146,10 @@ export const useStore = create((set) => ({
             console.error(err);
         }
     }
+}), {
+    name: 'cococounts-storage',
+    partialize: (state) => ({
+        currentUser: state.currentUser,
+        currentGroup: state.currentGroup
+    }),
 }));
