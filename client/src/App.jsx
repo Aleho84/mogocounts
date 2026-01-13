@@ -35,7 +35,7 @@ function App() {
       <Toaster position="top-center" richColors />
       <div className="min-h-[100dvh] w-full bg-slate-950 flex justify-center">
         {/* App Shell (Vista Móvil en PC) */}
-        <div className="w-full max-w-[720px] bg-slate-900 min-h-[100dvh] relative shadow-2xl border-x border-slate-800/50 pb-20">
+        <div className="w-full max-w-[720px] bg-slate-900 min-h-[100dvh] relative shadow-2xl border-x border-slate-800/50">
           <AnimatedRoutes />
           <BottomNav />
         </div>
