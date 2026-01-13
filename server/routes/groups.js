@@ -32,10 +32,16 @@ router.post('/', [
 // Obtener Detalles del Grupo
 router.get('/:id', async (req, res) => {
     try {
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).json({ error: 'Group not found (Invalid ID)' });
+        }
         const group = await Group.findById(req.params.id);
         if (!group) return res.status(404).json({ error: 'Group not found' });
         res.json(group);
     } catch (err) {
+        if (err.kind === 'ObjectId') {
+            return res.status(404).json({ error: 'Group not found' });
+        }
         res.status(500).json({ error: err.message });
     }
 });
@@ -97,9 +103,15 @@ router.delete('/:id/participants', [
 // Obtener Gastos del Grupo
 router.get('/:id/expenses', async (req, res) => {
     try {
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).json({ error: 'Group not found (Invalid ID)' });
+        }
         const expenses = await Expense.find({ groupId: req.params.id }).sort({ date: -1 });
         res.json(expenses);
     } catch (err) {
+        if (err.kind === 'ObjectId') {
+            return res.status(404).json({ error: 'Group not found' });
+        }
         res.status(500).json({ error: err.message });
     }
 });
@@ -107,6 +119,10 @@ router.get('/:id/expenses', async (req, res) => {
 // Obtener Balance
 router.get('/:id/balance', async (req, res) => {
     try {
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).json({ error: 'Group not found (Invalid ID)' });
+        }
+
         const group = await Group.findById(req.params.id);
         if (!group) return res.status(404).json({ error: 'Group not found' });
 
@@ -125,6 +141,9 @@ router.get('/:id/balance', async (req, res) => {
 
         res.json({ debts });
     } catch (err) {
+        if (err.kind === 'ObjectId') {
+            return res.status(404).json({ error: 'Group not found' });
+        }
         res.status(500).json({ error: err.message });
     }
 });

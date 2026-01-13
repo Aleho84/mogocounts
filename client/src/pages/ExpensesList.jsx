@@ -6,12 +6,13 @@ import Card from '../components/ui/card';
 import Button from '../components/ui/button';
 
 import { PageTransition } from '../components/ui/PageTransition';
+import GroupNotFound from './GroupNotFound';
 import { toast } from 'sonner';
 
 const ExpensesList = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { currentGroup, expenses, fetchGroup, fetchExpenses, loading, currentUser, setCurrentUser, deleteExpense } = useStore();
+    const { currentGroup, expenses, fetchGroup, fetchExpenses, loading, currentUser, setCurrentUser, deleteExpense, error } = useStore();
     const [showUserSelect, setShowUserSelect] = useState(false);
     const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
@@ -21,6 +22,9 @@ const ExpensesList = () => {
             fetchExpenses(id);
         }
     }, [id]);
+
+    // Moved error check down
+
 
     useEffect(() => {
         if (currentGroup && !currentUser) {
@@ -39,6 +43,10 @@ const ExpensesList = () => {
         navigator.clipboard.writeText(window.location.href);
         toast.success('¡Enlace copiado al portapapeles!');
     };
+
+    if (error === 'GROUP_NOT_FOUND') {
+        return <GroupNotFound />;
+    }
 
     if (!currentGroup) return (
         <div className="flex items-center justify-center min-h-[100dvh] text-slate-400">

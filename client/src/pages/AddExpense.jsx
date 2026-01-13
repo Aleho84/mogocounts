@@ -6,13 +6,14 @@ import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import Card from '../components/ui/card';
 import { PageTransition } from '../components/ui/PageTransition';
+import GroupNotFound from './GroupNotFound';
 import { toast } from 'sonner';
 
 const AddExpense = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
-    const { currentGroup, addExpense, updateExpense, fetchGroup, currentUser } = useStore();
+    const { currentGroup, addExpense, updateExpense, fetchGroup, currentUser, error } = useStore();
 
     // Verificar si estamos editando
     const expenseToEdit = location.state?.expenseToEdit;
@@ -93,7 +94,10 @@ const AddExpense = () => {
         }
     };
 
-    if (!currentGroup) return <div className="p-4 text-center text-slate-400">Cargando...</div>;
+    if (!currentGroup && !error) return <div className="p-4 text-center text-slate-400">Cargando...</div>;
+
+    // Check error AFTER hooks
+    if (error === 'GROUP_NOT_FOUND') return <GroupNotFound />;
 
     return (
         <PageTransition className="min-h-[100dvh] bg-slate-900 pb-10">

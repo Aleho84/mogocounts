@@ -50,7 +50,11 @@ export const useStore = create(persist((set) => ({
             const res = await axios.get(`${API_URL}/groups/${id}`);
             set({ currentGroup: res.data, loading: false });
         } catch (err) {
-            set({ error: err.message, loading: false });
+            if (err.response && (err.response.status === 404 || err.response.status === 400 || err.response.status === 500)) {
+                set({ error: 'GROUP_NOT_FOUND', loading: false, currentGroup: null });
+            } else {
+                set({ error: err.message, loading: false });
+            }
         }
     },
 

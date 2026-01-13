@@ -6,11 +6,12 @@ import Card from '../components/ui/card';
 import Button from '../components/ui/button';
 
 import { PageTransition } from '../components/ui/PageTransition';
+import GroupNotFound from './GroupNotFound';
 
 const BalanceView = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { balance, fetchBalance, currentGroup, fetchGroup } = useStore();
+    const { balance, fetchBalance, currentGroup, fetchGroup, error } = useStore();
 
     useEffect(() => {
         if (id) {
@@ -18,6 +19,8 @@ const BalanceView = () => {
             fetchBalance(id);
         }
     }, [id]);
+
+    if (error === 'GROUP_NOT_FOUND') return <GroupNotFound />;
 
     return (
         <PageTransition className="min-h-[100dvh] bg-slate-900 pb-24">

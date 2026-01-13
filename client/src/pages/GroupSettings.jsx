@@ -5,13 +5,14 @@ import { ArrowLeft, Users, Save, Trash2, Plus, Edit2 } from 'lucide-react';
 import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import Card from '../components/ui/card';
+import GroupNotFound from './GroupNotFound';
 import { PageTransition } from '../components/ui/PageTransition';
 import { toast } from 'sonner';
 
 const GroupSettings = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { currentGroup, fetchGroup, updateGroup, addParticipant, removeParticipant } = useStore();
+    const { currentGroup, fetchGroup, updateGroup, addParticipant, removeParticipant, error } = useStore();
 
     const [title, setTitle] = useState('');
     const [newParticipant, setNewParticipant] = useState('');
@@ -60,7 +61,9 @@ const GroupSettings = () => {
         }
     };
 
-    if (!currentGroup) return <div className="p-4 text-center text-slate-400">Cargando...</div>;
+    if (!currentGroup && !error) return <div className="p-4 text-center text-slate-400">Cargando...</div>;
+
+    if (error === 'GROUP_NOT_FOUND') return <GroupNotFound />;
 
     return (
         <div className="min-h-[100dvh] bg-slate-900 pb-32">
