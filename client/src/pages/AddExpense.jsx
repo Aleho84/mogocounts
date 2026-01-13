@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { ArrowLeft, AlignLeft, Users, Check } from 'lucide-react';
+import { AlignLeft, Users, Check, ArrowLeft } from 'lucide-react';
 import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import Card from '../components/ui/card';
@@ -67,7 +67,7 @@ const AddExpense = () => {
         if (!amount || !description || !payer) return;
 
         if (involved.length === 0) {
-            toast.error('Debes seleccionar al menos una persona para dividir el gasto.');
+            toast.error('No seas retrasado 😒. Debes seleccionar al menos una persona para dividir el gasto.');
             return;
         }
 
@@ -96,7 +96,7 @@ const AddExpense = () => {
     if (!currentGroup) return <div className="p-4 text-center text-slate-400">Cargando...</div>;
 
     return (
-        <PageTransition className="min-h-screen bg-slate-900 pb-10">
+        <PageTransition className="min-h-[100dvh] bg-slate-900 pb-10">
             {/* Modal de División */}
             {showSplitModal && (
                 <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center">
@@ -147,7 +147,7 @@ const AddExpense = () => {
                 >
                     <ArrowLeft size={24} />
                 </Button>
-                <h1 className="text-slate-100 font-semibold tracking-wide">{isEditing ? 'Editar Gasto' : 'Nuevo Gasto'}</h1>
+                <h1 className="text-2xl font-bold text-slate-100">{isEditing ? '📝 Editar Gasto' : '💵 Nuevo Gasto'}</h1>
                 <div className="w-10" /> {/* Espaciador para centrar */}
             </div>
 
@@ -175,7 +175,7 @@ const AddExpense = () => {
                     <Input
                         label="DESCRIBE EL GASTO"
                         icon={AlignLeft}
-                        placeholder="Ej. Cervezas, Uber, Super..."
+                        placeholder="Ej. Birras, Puchos, Drogas..."
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         className="bg-slate-800 border-none text-lg py-4"

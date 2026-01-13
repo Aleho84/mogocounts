@@ -20,7 +20,7 @@ const BalanceView = () => {
     }, [id]);
 
     return (
-        <PageTransition className="min-h-screen bg-slate-900 pb-24">
+        <PageTransition className="min-h-[100dvh] bg-slate-900 pb-24">
             {/* Encabezado */}
             <div className="p-6 flex items-center">
                 <Button

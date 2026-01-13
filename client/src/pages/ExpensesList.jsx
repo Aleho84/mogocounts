@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { Share2, Users, Calendar, ArrowLeft, UserCircle, LogOut, Home, Pencil, Trash2 } from 'lucide-react';
+import { Share2, Users, Calendar, ArrowLeft, LogOut, Home, Pencil, Trash2 } from 'lucide-react';
 import Card from '../components/ui/card';
 import Button from '../components/ui/button';
 
@@ -41,7 +41,7 @@ const ExpensesList = () => {
     };
 
     if (!currentGroup) return (
-        <div className="flex items-center justify-center min-h-screen text-slate-400">
+        <div className="flex items-center justify-center min-h-[100dvh] text-slate-400">
             <div className="animate-pulse">Cargando grupo...</div>
         </div>
     );
@@ -49,7 +49,7 @@ const ExpensesList = () => {
     // Modal de Selección de Usuario
     if (showUserSelect) {
         return (
-            <PageTransition className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-6 relative">
+            <PageTransition className="min-h-[100dvh] bg-slate-900 flex flex-col items-center justify-center p-6 relative">
                 <div className="absolute top-0 left-0 w-full h-full bg-slate-900/50 backdrop-blur-sm z-0"></div>
                 <div className="relative z-10 w-full max-w-md">
                     <h2 className="text-3xl font-display font-bold text-white mb-2 text-center">¿Quién eres?</h2>
@@ -82,13 +82,13 @@ const ExpensesList = () => {
     }
 
     return (
-        <PageTransition className="min-h-screen pb-32">
+        <PageTransition className="min-h-[100dvh] pb-32">
             {/* Encabezado / Banner */}
             <div className="relative bg-gradient-to-b from-indigo-900/20 to-slate-900 pt-6 pb-6 px-6 rounded-b-[3rem] border-b border-indigo-500/10">
                 {/* Navegación Superior */}
                 <div className="flex justify-between items-center mb-6">
                     <Button variant="ghost" size="icon" onClick={() => navigate('/')} className="text-slate-400 hover:text-white hover:bg-slate-800">
-                        <ArrowLeft size={24} />
+                        <Home size={24} />
                     </Button>
 
                     {currentUser && (
@@ -102,18 +102,27 @@ const ExpensesList = () => {
                     )}
                 </div>
 
-                <div className="flex justify-between items-end mb-2">
+                <div className="flex justify-between items-end mb-4 relative z-10">
                     <div>
-                        <h1 className="text-3xl font-display font-bold text-white mb-1">
-                            {currentGroup.title}
+                        <h1 className="text-4xl font-display font-black tracking-tighter mb-2 drop-shadow-lg">
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-100 to-indigo-300">
+                                {currentGroup.title}
+                            </span>
                         </h1>
-                        <div className="flex items-center text-indigo-300 bg-indigo-500/10 px-3 py-1 rounded-full w-fit">
-                            <Users size={14} className="mr-1.5" />
-                            <span className="text-xs font-medium">{currentGroup.participants.length} participantes</span>
+                        <div className="flex items-center gap-2">
+                            <div className="flex items-center text-indigo-200 bg-indigo-500/20 border border-indigo-500/30 px-3 py-1.5 rounded-full w-fit backdrop-blur-md shadow-sm">
+                                <Users size={14} className="mr-1.5 text-indigo-400" />
+                                <span className="text-xs font-semibold">{currentGroup.participants.length} amigos</span>
+                            </div>
                         </div>
                     </div>
-                    <Button variant="ghost" size="icon" onClick={copyLink} className="bg-slate-800/50 hover:bg-slate-700 text-white">
-                        <Share2 size={18} />
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={copyLink}
+                        className="bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 border border-indigo-500/30 shadow-lg shadow-indigo-500/10 mb-1"
+                    >
+                        <Share2 size={20} />
                     </Button>
                 </div>
             </div>

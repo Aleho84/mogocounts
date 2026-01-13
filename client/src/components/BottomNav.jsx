@@ -1,10 +1,13 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Receipt, Scale, Settings, Plus } from 'lucide-react';
 import { useStore } from '../store/useStore';
 
 const BottomNav = () => {
     const { currentGroup } = useStore();
+    const location = useLocation();
+
+    if (location.pathname === '/') return null;
 
     if (!currentGroup) return (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-6">
@@ -35,14 +38,14 @@ const BottomNav = () => {
                     <Receipt size={24} strokeWidth={1.5} />
                 </NavLink>
 
-                <div className="relative -top-5">
-                    <NavLink
-                        to={`/group/${currentGroup._id}/add`}
-                        className="flex items-center justify-center w-14 h-14 bg-indigo-500 rounded-full text-white shadow-lg shadow-indigo-500/40 transition-transform active:scale-95 hover:scale-105"
-                    >
-                        <Plus size={32} />
-                    </NavLink>
-                </div>
+
+                <NavLink
+                    to={`/group/${currentGroup._id}/add`}
+                    className="flex items-center justify-center w-14 h-14 bg-indigo-500 rounded-full text-white shadow-lg shadow-indigo-500/40 transition-transform active:scale-95 hover:scale-105"
+                >
+                    <Plus size={32} />
+                </NavLink>
+
 
                 <NavLink
                     to={`/group/${currentGroup._id}/balance`}

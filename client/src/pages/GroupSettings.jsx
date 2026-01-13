@@ -63,7 +63,7 @@ const GroupSettings = () => {
     if (!currentGroup) return <div className="p-4 text-center text-slate-400">Cargando...</div>;
 
     return (
-        <div className="min-h-screen bg-slate-900 pb-32">
+        <div className="min-h-[100dvh] bg-slate-900 pb-32">
             {/* Encabezado */}
             <div className="flex items-center gap-4 p-6">
                 <Button
