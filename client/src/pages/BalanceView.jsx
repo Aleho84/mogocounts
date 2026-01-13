@@ -21,7 +21,7 @@ const BalanceView = () => {
 
     return (
         <PageTransition className="min-h-screen bg-slate-900 pb-24">
-            {/* Header */}
+            {/* Encabezado */}
             <div className="p-6 flex items-center">
                 <Button
                     variant="ghost"
@@ -92,7 +92,7 @@ const BalanceView = () => {
 
                 <div className="mt-8 bg-slate-800/50 p-4 rounded-xl text-center max-w-xs mx-auto backdrop-blur-sm border border-slate-700/30">
                     <p className="text-xs text-slate-500">
-                        Este cálculo minimiza las transacciones necesarias para que todos queden a mano.
+                        Este cálculo minimiza las transacciones necesarias, no sean retrasados y paguen tal como lo indica.
                     </p>
                 </div>
             </div>

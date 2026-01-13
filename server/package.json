@@ -1,7 +1,6 @@
 {
-  "name": "cococounts-server",
-  "version": "1.0.0",
-  "description": "Backend for CuentasClaras",
+  "name": "mogocounts-server",
+  "description": "Backend for mogocounts",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

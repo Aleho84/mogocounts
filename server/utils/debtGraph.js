@@ -1,16 +1,16 @@
 /**
- * Simplifies debts within a group to minimize transactions.
- * @param {Array} expenses - List of expense objects { payer, amount, involved[] }
- * @param {Array} participants - List of all participant names
- * @returns {Array} - Optimized transactions [{ from, to, amount }]
+ * Simplifica las deudas dentro de un grupo para minimizar las transacciones.
+ * @param {Array} expenses - Lista de objetos de gastos { payer, amount, involved[] }
+ * @param {Array} participants - Lista de nombres de todos los participantes
+ * @returns {Array} - Transacciones optimizadas [{ from, to, amount }]
  */
 function simplifyDebts(expenses, participants) {
     const balances = {};
 
-    // Initialize balances
+    // Inicializar balances
     participants.forEach(p => balances[p] = 0);
 
-    // Calculate net balances
+    // Calcular balances netos
     expenses.forEach(expense => {
         const paidBy = expense.payer;
         const amount = expense.amount;
@@ -20,16 +20,16 @@ function simplifyDebts(expenses, participants) {
 
         const splitAmount = amount / involved.length;
 
-        // Payer gets credit +amount (but technically they already paid it, 
-        // so we track what they are OWED vs what they OWE).
-        // Logic: Payer paid 'amount'. 
-        // They are 'consumer' of 'splitAmount' if they are in 'involved'.
-        // Net effect for Payer: +amount - (splitAmount if involved)
-        // Net effect for Others: -splitAmount
+        // El pagador recibe crédito +cantidad (pero técnicamente ya lo pagó, 
+        // así que rastreamos lo que se les DEBE vs lo que DEBEN).
+        // Lógica: El pagador pagó 'cantidad'. 
+        // Son 'consumidores' de 'cantidadDividida' si están en 'involucrados'.
+        // Efecto neto para el Pagador: +cantidad - (cantidadDividida si está involucrado)
+        // Efecto neto para Otros: -cantidadDividida
 
-        // Easier way: 
-        // Payer +amount
-        // Everyone involved -splitAmount
+        // Forma más fácil: 
+        // Pagador +cantidad
+        // Todos los involucrados -cantidadDividida
 
         if (!balances[paidBy]) balances[paidBy] = 0;
         balances[paidBy] += amount;
@@ -40,31 +40,31 @@ function simplifyDebts(expenses, participants) {
         });
     });
 
-    // Split into debtors and creditors
+    // Dividir en deudores y acreedores
     const debtors = [];
     const creditors = [];
 
     for (const person in balances) {
         const amount = balances[person];
-        // Use a small epsilon for float comparison
+        // Usar un pequeño epsilon para comparación de flotantes
         if (amount < -0.01) debtors.push({ person, amount });
         else if (amount > 0.01) creditors.push({ person, amount });
     }
 
-    debtors.sort((a, b) => a.amount - b.amount); // Ascending (most negative first)
-    creditors.sort((a, b) => b.amount - a.amount); // Descending (most positive first)
+    debtors.sort((a, b) => a.amount - b.amount); // Ascendente (más negativo primero)
+    creditors.sort((a, b) => b.amount - a.amount); // Descendente (más positivo primero)
 
     const transactions = [];
 
-    let i = 0; // Iterator for debtors
-    let j = 0; // Iterator for creditors
+    let i = 0; // Iterador para deudores
+    let j = 0; // Iterador para acreedores
 
     while (i < debtors.length && j < creditors.length) {
         const debtor = debtors[i];
         const creditor = creditors[j];
 
-        // The amount to settle is the minimum of avoiding overpayment
-        // debtor.amount is negative, so we take -debtor.amount vs creditor.amount
+        // La cantidad a liquidar es el mínimo para evitar sobrepago
+        // debtor.amount es negativo, así que tomamos -debtor.amount vs creditor.amount
         const amount = Math.min(-debtor.amount, creditor.amount);
 
         transactions.push({
@@ -73,11 +73,11 @@ function simplifyDebts(expenses, participants) {
             amount: Number(amount.toFixed(2))
         });
 
-        // Update remaining balances
+        // Actualizar balances restantes
         debtor.amount += amount;
         creditor.amount -= amount;
 
-        // If settled, move to next
+        // Si se liquidó, pasar al siguiente
         if (Math.abs(debtor.amount) < 0.01) i++;
         if (Math.abs(creditor.amount) < 0.01) j++;
     }

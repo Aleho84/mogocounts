@@ -10,24 +10,23 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Database Connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cococounts';
+// Conexión a la Base de Datos
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mogocounts';
 
 mongoose.connect(MONGODB_URI)
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('MongoDB Connection Error:', err));
 
-// Routes
-// Routes
+// Rutas
 app.use('/api/groups', require('./routes/groups'));
 app.use('/api/expenses', require('./routes/expenses'));
 
-// Basic Route
+// Ruta Básica
 app.get('/', (req, res) => {
     res.send('CuentasClaras API is running');
 });
 
-// Start Server
+// Iniciar Servidor
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

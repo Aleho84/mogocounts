@@ -64,7 +64,7 @@ const GroupSettings = () => {
 
     return (
         <div className="min-h-screen bg-slate-900 pb-32">
-            {/* Header */}
+            {/* Encabezado */}
             <div className="flex items-center gap-4 p-6">
                 <Button
                     variant="ghost"
@@ -78,7 +78,7 @@ const GroupSettings = () => {
             </div>
 
             <div className="px-6 space-y-8">
-                {/* Title Section */}
+                {/* Sección de Título */}
                 <section>
                     <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Nombre del Grupo</h2>
                     <div className="flex items-center gap-3">
@@ -105,11 +105,11 @@ const GroupSettings = () => {
                     </div>
                 </section>
 
-                {/* Participants Section */}
+                {/* Sección de Participantes */}
                 <section>
                     <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Participantes ({currentGroup.participants.length})</h2>
 
-                    {/* Add Participant Form */}
+                    {/* Formulario para Agregar Participante */}
                     <form onSubmit={handleAddParticipant} className="mb-6 flex gap-2">
                         <Input
                             placeholder="Agregar persona..."
@@ -124,7 +124,7 @@ const GroupSettings = () => {
                         </Button>
                     </form>
 
-                    {/* Participants List */}
+                    {/* Lista de Participantes */}
                     <div className="space-y-3">
                         {currentGroup.participants.map(participant => (
                             <Card key={participant} className="bg-slate-800/40 border-slate-700/30 flex items-center justify-between p-3">

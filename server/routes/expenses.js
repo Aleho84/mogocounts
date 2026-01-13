@@ -3,7 +3,7 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const Expense = require('../models/Expense');
 
-// Validation middleware
+// Middleware de validación
 const validate = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -12,7 +12,7 @@ const validate = (req, res, next) => {
     next();
 };
 
-// Create Expense
+// Crear Gasto
 router.post('/', [
     check('groupId', 'Group ID is required').not().isEmpty(),
     check('description', 'Description is required').not().isEmpty(),
@@ -31,7 +31,7 @@ router.post('/', [
         });
         await expense.save();
 
-        // Invalidate Group Cache
+        // Invalidar Caché del Grupo
         await require('../models/Group').findByIdAndUpdate(groupId, { $unset: { debtsLastUpdated: 1 } });
 
         res.json(expense);
@@ -40,7 +40,7 @@ router.post('/', [
     }
 });
 
-// Update Expense
+// Actualizar Gasto
 router.put('/:id', [
     check('description', 'Description is required').optional().not().isEmpty(),
     check('amount', 'Amount must be a number').optional().isNumeric(),
@@ -61,8 +61,8 @@ router.put('/:id', [
         );
         if (!expense) return res.status(404).json({ error: 'Expense not found' });
 
-        // Invalidate Group Cache (using expense.groupId which wasn't changed, or fetching it if needed)
-        // Since we did findByIdAndUpdate, 'expense' is the new doc (new: true).
+        // Invalidar Caché del Grupo (usando expense.groupId que no cambió, o buscándolo si es necesario)
+        // Dado que hicimos findByIdAndUpdate, 'expense' es el nuevo documento (new: true).
         await require('../models/Group').findByIdAndUpdate(expense.groupId, { $unset: { debtsLastUpdated: 1 } });
 
         res.json(expense);
@@ -71,13 +71,13 @@ router.put('/:id', [
     }
 });
 
-// Delete Expense
+// Eliminar Gasto
 router.delete('/:id', async (req, res) => {
     try {
         const expense = await Expense.findByIdAndDelete(req.params.id);
         if (!expense) return res.status(404).json({ error: 'Expense not found' });
 
-        // Invalidate Group Cache
+        // Invalidar Caché del Grupo
         await require('../models/Group').findByIdAndUpdate(expense.groupId, { $unset: { debtsLastUpdated: 1 } });
 
         res.json({ message: 'Expense deleted' });

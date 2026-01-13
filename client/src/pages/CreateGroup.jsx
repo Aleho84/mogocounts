@@ -45,7 +45,7 @@ const CreateGroup = () => {
 
     return (
         <PageTransition className="min-h-screen bg-slate-900 flex flex-col justify-center p-6 relative overflow-hidden">
-            {/* Background Decorations */}
+            {/* Decoraciones de fondo */}
             <div className="absolute top-0 left-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-0 right-0 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
 
@@ -82,7 +82,7 @@ const CreateGroup = () => {
                                 required
                             />
 
-                            {/* Participants Section */}
+                            {/* Sección de Participantes */}
                             <div className="space-y-2">
                                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
                                     PARTICIPANTES (OPCIONAL)

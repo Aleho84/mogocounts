@@ -14,7 +14,7 @@ const AddExpense = () => {
     const location = useLocation();
     const { currentGroup, addExpense, updateExpense, fetchGroup, currentUser } = useStore();
 
-    // Check if we are editing
+    // Verificar si estamos editando
     const expenseToEdit = location.state?.expenseToEdit;
     const isEditing = !!expenseToEdit;
 
@@ -29,14 +29,14 @@ const AddExpense = () => {
     }, [id]);
 
     useEffect(() => {
-        // Init involved if empty and not editing
+        // Inicializar involucrados si está vacío y no estamos editando
         if (!isEditing && currentGroup && currentGroup.participants.length > 0 && involved.length === 0) {
             setInvolved(currentGroup.participants);
         }
     }, [currentGroup, isEditing]);
 
     useEffect(() => {
-        // Only set default payer if NOT editing and payer is empty
+        // Solo establecer pagador predeterminado si NO se está editando y el pagador está vacío
         if (!isEditing && currentGroup && currentGroup.participants.length > 0 && !payer) {
             if (currentUser && currentGroup.participants.includes(currentUser)) {
                 setPayer(currentUser);
@@ -97,7 +97,7 @@ const AddExpense = () => {
 
     return (
         <PageTransition className="min-h-screen bg-slate-900 pb-10">
-            {/* Split Modal */}
+            {/* Modal de División */}
             {showSplitModal && (
                 <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowSplitModal(false)} />
@@ -137,7 +137,7 @@ const AddExpense = () => {
                 </div>
             )}
 
-            {/* Header */}
+            {/* Encabezado */}
             <div className="flex items-center justify-between p-6">
                 <Button
                     variant="ghost"
@@ -148,12 +148,12 @@ const AddExpense = () => {
                     <ArrowLeft size={24} />
                 </Button>
                 <h1 className="text-slate-100 font-semibold tracking-wide">{isEditing ? 'Editar Gasto' : 'Nuevo Gasto'}</h1>
-                <div className="w-10" /> {/* Spacer for centering */}
+                <div className="w-10" /> {/* Espaciador para centrar */}
             </div>
 
             <form onSubmit={handleSubmit} className="px-6 space-y-8 animate-fade-in">
 
-                {/* Amount Input */}
+                {/* Entrada de Monto */}
                 <div className="flex flex-col items-center justify-center py-6">
                     <p className="text-slate-400 text-sm font-medium mb-2">Monto total</p>
                     <div className="relative flex items-center justify-center">
@@ -170,7 +170,7 @@ const AddExpense = () => {
                     </div>
                 </div>
 
-                {/* Details Section */}
+                {/* Sección de Detalles */}
                 <div className="space-y-6">
                     <Input
                         label="DESCRIBE EL GASTO"
@@ -239,7 +239,7 @@ const AddExpense = () => {
                     </Card>
                 </div>
 
-                {/* Submit */}
+                {/* Enviar */}
                 <div className="mt-12 mb-32">
                     <Button
                         type="submit"

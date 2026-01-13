@@ -33,7 +33,7 @@ function App() {
   return (
     <Router>
       <Toaster position="top-center" richColors />
-      <div className="min-h-screen bg-github-bg pb-20"> {/* pb-20 for BottomNav space */}
+      <div className="min-h-screen bg-github-bg pb-20"> {/* pb-20 para espacio de BottomNav */}
         <AnimatedRoutes />
         <BottomNav />
       </div>

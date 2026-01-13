@@ -83,9 +83,9 @@ const ExpensesList = () => {
 
     return (
         <PageTransition className="min-h-screen pb-32">
-            {/* Header / Banner */}
+            {/* Encabezado / Banner */}
             <div className="relative bg-gradient-to-b from-indigo-900/20 to-slate-900 pt-6 pb-6 px-6 rounded-b-[3rem] border-b border-indigo-500/10">
-                {/* Top Nav */}
+                {/* Navegación Superior */}
                 <div className="flex justify-between items-center mb-6">
                     <Button variant="ghost" size="icon" onClick={() => navigate('/')} className="text-slate-400 hover:text-white hover:bg-slate-800">
                         <ArrowLeft size={24} />
@@ -118,7 +118,7 @@ const ExpensesList = () => {
                 </div>
             </div>
 
-            {/* Expenses List */}
+            {/* Lista de Gastos */}
             <div className="px-4 -mt-2 space-y-3">
                 {loading && expenses.length === 0 ? (
                     <div className="space-y-3 mt-4">
@@ -165,7 +165,7 @@ const ExpensesList = () => {
                                     <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-300 block">
                                         ${expense.amount.toLocaleString()}
                                     </span>
-                                    {/* Actions */}
+                                    {/* Acciones */}
                                     <div className="flex items-center gap-1 mt-1 z-20 relative">
                                         {confirmDeleteId === expense._id ? (
                                             <>

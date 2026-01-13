@@ -5,7 +5,7 @@ const Group = require('../models/Group');
 const Expense = require('../models/Expense');
 const { simplifyDebts } = require('../utils/debtGraph');
 
-// Validation middleware
+// Middleware de validación
 const validate = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -14,7 +14,7 @@ const validate = (req, res, next) => {
     next();
 };
 
-// Create Group
+// Crear Grupo
 router.post('/', [
     check('title', 'Title is required').not().isEmpty(),
     check('currency', 'Currency is required').optional().isLength({ min: 3, max: 3 })
@@ -29,7 +29,7 @@ router.post('/', [
     }
 });
 
-// Get Group Details
+// Obtener Detalles del Grupo
 router.get('/:id', async (req, res) => {
     try {
         const group = await Group.findById(req.params.id);
@@ -40,7 +40,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Update Group Title
+// Actualizar Título del Grupo
 router.put('/:id', [
     check('title', 'Title is required').not().isEmpty()
 ], validate, async (req, res) => {
@@ -58,7 +58,7 @@ router.put('/:id', [
     }
 });
 
-// Add Participant
+// Agregar Participante
 router.post('/:id/participants', [
     check('name', 'Name is required').not().isEmpty()
 ], validate, async (req, res) => {
@@ -77,7 +77,7 @@ router.post('/:id/participants', [
     }
 });
 
-// Remove Participant
+// Eliminar Participante
 router.delete('/:id/participants', [
     check('name', 'Name is required').not().isEmpty()
 ], validate, async (req, res) => {
@@ -94,7 +94,7 @@ router.delete('/:id/participants', [
     }
 });
 
-// Get Expenses for Group
+// Obtener Gastos del Grupo
 router.get('/:id/expenses', async (req, res) => {
     try {
         const expenses = await Expense.find({ groupId: req.params.id }).sort({ date: -1 });
@@ -104,13 +104,13 @@ router.get('/:id/expenses', async (req, res) => {
     }
 });
 
-// Get Balance
+// Obtener Balance
 router.get('/:id/balance', async (req, res) => {
     try {
         const group = await Group.findById(req.params.id);
         if (!group) return res.status(404).json({ error: 'Group not found' });
 
-        // Check cache using timestamp
+        // Verificar caché usando marca de tiempo
         if (group.debtsLastUpdated && group.cachedDebts) {
             return res.json({ debts: group.cachedDebts });
         }
@@ -118,7 +118,7 @@ router.get('/:id/balance', async (req, res) => {
         const expenses = await Expense.find({ groupId: req.params.id });
         const debts = simplifyDebts(expenses, group.participants);
 
-        // Update cache
+        // Actualizar caché
         group.cachedDebts = debts;
         group.debtsLastUpdated = new Date();
         await group.save();

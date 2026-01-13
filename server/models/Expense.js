@@ -20,7 +20,7 @@ const ExpenseSchema = new mongoose.Schema({
         required: true
     },
     involved: [{
-        type: String, // Names of participants involved in this expense
+        type: String, // Nombres de los participantes involucrados en este gasto
         required: true
     }],
     date: {
