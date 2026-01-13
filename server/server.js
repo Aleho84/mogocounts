@@ -12,6 +12,7 @@ app.use(express.json());
 
 // Conexión a la Base de Datos
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mogocounts';
+console.log('Attempting to connect to MongoDB at:', MONGODB_URI);
 
 mongoose.connect(MONGODB_URI)
     .then(() => console.log('MongoDB Connected'))

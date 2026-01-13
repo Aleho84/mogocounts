@@ -34,6 +34,14 @@ export default defineConfig({
     // Habilitar acceso desde red local
     host: true,
     // Configuración HTTPS
-    https: httpsConfig
+    https: httpsConfig,
+    // Proxy para desarrollo local
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   }
 })

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const useStore = create(persist((set) => ({
     currentGroup: null,
@@ -39,7 +39,9 @@ export const useStore = create(persist((set) => ({
             set({ currentGroup: finalGroupState.data, loading: false });
             return finalGroupState.data;
         } catch (err) {
-            set({ error: err.message, loading: false });
+            const errorMessage = err.response?.data?.error || err.message;
+            console.error("Error creating group:", errorMessage, err);
+            set({ error: errorMessage, loading: false });
             throw err;
         }
     },

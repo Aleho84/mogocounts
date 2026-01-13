@@ -1,6 +1,10 @@
 {
   "name": "mogocounts",
   "version": "1.0.0",
+  "description": "MogoCounts, Aplicación para gestionar gastos en grupos.",
+  "scripts": {
+    "docker": "docker compose up -d --build"
+  },
   "author": {
     "name": "Alejandro Abraham",
     "email": "alejandro.r.abraham@gmail.com",
