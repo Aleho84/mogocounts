@@ -54,9 +54,16 @@ const CreateGroup = () => {
                     <div className="inline-flex items-center justify-center p-4 bg-indigo-500/10 rounded-2xl mb-6 shadow-xl shadow-indigo-500/10 ring-1 ring-indigo-500/20">
                         <img src="/logo.png" alt="Logo" className="w-[120px] h-[120px] object-contain" />
                     </div>
-                    <h1 className="text-4xl font-display font-bold text-white mb-3 tracking-tight">
-                        Mogo<span className="text-indigo-400">Counts</span>
-                    </h1>
+                    <div className="block">
+                        <div className="relative inline-block">
+                            <h1 className="text-4xl font-display font-bold text-white mb-3 tracking-tight">
+                                Mogo<span className="text-indigo-400">Counts</span>
+                            </h1>
+                            <span className="absolute -bottom-0 -right-6 rotate-[-15deg] bg-rose-500/10 border border-rose-500/50 text-rose-500 text-[8px] font-bold px-1.5 rounded uppercase tracking-wider">
+                                Beta
+                            </span>
+                        </div>
+                    </div>
                     <p className="text-slate-400 text-lg leading-relaxed">
                         Tan fácil de usar que hasta el mas retrasado de tu amigo lo va a manejar sin problemas.
                     </p>
