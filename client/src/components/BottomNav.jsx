@@ -29,7 +29,7 @@ const BottomNav = () => {
     `;
 
     return (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-6 animate-slide-up">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-6">
             <div className="flex justify-between items-center bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-2 shadow-2xl shadow-black/50">
                 <NavLink
                     to={`/group/${currentGroup._id}/expenses`}
