@@ -38,7 +38,7 @@ const CreateGroup = () => {
         try {
             const group = await createGroup(title, 'ARS', username, participants);
             navigate(`/group/${group._id}/expenses`);
-        } catch (err) {
+        } catch {
             alert('Error creating group');
         }
     };

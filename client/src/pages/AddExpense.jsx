@@ -27,25 +27,25 @@ const AddExpense = () => {
 
     useEffect(() => {
         if (!currentGroup || currentGroup._id !== id) fetchGroup(id);
-    }, [id]);
+    }, [id, currentGroup, fetchGroup]);
 
     useEffect(() => {
         // Inicializar involucrados si está vacío y no estamos editando
         if (!isEditing && currentGroup && currentGroup.participants.length > 0 && involved.length === 0) {
-            setInvolved(currentGroup.participants);
+            setInvolved(currentGroup.participants); // eslint-disable-line react-hooks/set-state-in-effect
         }
-    }, [currentGroup, isEditing]);
+    }, [currentGroup, isEditing, involved.length]);
 
     useEffect(() => {
         // Solo establecer pagador predeterminado si NO se está editando y el pagador está vacío
         if (!isEditing && currentGroup && currentGroup.participants.length > 0 && !payer) {
             if (currentUser && currentGroup.participants.includes(currentUser)) {
-                setPayer(currentUser);
+                setPayer(currentUser); // eslint-disable-line react-hooks/set-state-in-effect
             } else {
-                setPayer(currentGroup.participants[0]);
+                setPayer(currentGroup.participants[0]); // eslint-disable-line react-hooks/set-state-in-effect
             }
         }
-    }, [currentGroup, currentUser, isEditing]);
+    }, [currentGroup, currentUser, isEditing, payer]);
 
     const handleToggleInvolved = (person) => {
         if (involved.includes(person)) {
@@ -89,7 +89,7 @@ const AddExpense = () => {
                 toast.success('Gasto creado exitosamente');
             }
             navigate(`/group/${id}/expenses`);
-        } catch (error) {
+        } catch {
             toast.error('Ocurrió un error al guardar el gasto');
         }
     };

@@ -18,7 +18,7 @@ const BalanceView = () => {
             if (!currentGroup || currentGroup._id !== id) fetchGroup(id);
             fetchBalance(id);
         }
-    }, [id]);
+    }, [id, currentGroup, fetchGroup, fetchBalance]);
 
     if (error === 'GROUP_NOT_FOUND') return <GroupNotFound />;
 

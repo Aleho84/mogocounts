@@ -137,7 +137,7 @@ export const useStore = create(persist((set) => ({
         try {
             const res = await axios.get(`${API_URL}/groups/${groupId}/expenses`);
             set({ expenses: res.data, loading: false });
-        } catch (err) {
+        } catch {
             set({ loading: false });
         }
     },

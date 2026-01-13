@@ -13,30 +13,26 @@ const ExpensesList = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { currentGroup, expenses, fetchGroup, fetchExpenses, loading, currentUser, setCurrentUser, deleteExpense, error } = useStore();
-    const [showUserSelect, setShowUserSelect] = useState(false);
+    // const [showUserSelect, setShowUserSelect] = useState(false); // Derived from currentUser
     const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+
+    const showUserSelect = currentGroup && !currentUser;
 
     useEffect(() => {
         if (id) {
             if (!currentGroup || currentGroup._id !== id) fetchGroup(id);
             fetchExpenses(id);
         }
-    }, [id]);
+    }, [id, fetchGroup, fetchExpenses, currentGroup]);
 
     // Moved error check down
 
 
-    useEffect(() => {
-        if (currentGroup && !currentUser) {
-            setShowUserSelect(true);
-        } else {
-            setShowUserSelect(false);
-        }
-    }, [currentGroup, currentUser]);
+    // Removed useEffect for showUserSelect as it is derived state
 
     const handleUserSelect = (user) => {
         setCurrentUser(user);
-        setShowUserSelect(false);
+        // setShowUserSelect(false); // Auto update
     };
 
     const copyLink = () => {
@@ -193,7 +189,7 @@ const ExpensesList = () => {
                                                             await deleteExpense(expense._id, id);
                                                             toast.success('Gasto eliminado');
                                                             setConfirmDeleteId(null);
-                                                        } catch (err) {
+                                                        } catch {
                                                             toast.error('Error al eliminar');
                                                         }
                                                     }}

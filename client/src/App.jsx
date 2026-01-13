@@ -28,7 +28,7 @@ const AnimatedRoutes = () => {
 };
 
 function App() {
-  const { currentGroup } = useStore();
+  useStore();
 
   return (
     <Router>

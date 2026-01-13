@@ -22,10 +22,8 @@ const GroupSettings = () => {
     useEffect(() => {
         if (!currentGroup || currentGroup._id !== id) {
             fetchGroup(id);
-        } else {
-            setTitle(currentGroup.title);
         }
-    }, [id, currentGroup]);
+    }, [id, currentGroup, fetchGroup]);
 
     const handleUpdateTitle = async () => {
         if (title.trim() === '') return;
@@ -33,7 +31,7 @@ const GroupSettings = () => {
             await updateGroup(id, title);
             setIsEditingTitle(false);
             toast.success('Nombre del grupo actualizado');
-        } catch (error) {
+        } catch {
             toast.error('Error al actualizar nombre');
         }
     };
@@ -45,21 +43,12 @@ const GroupSettings = () => {
             await addParticipant(id, newParticipant);
             setNewParticipant('');
             toast.success(`${newParticipant} agregado al grupo`);
-        } catch (error) {
+        } catch {
             toast.error('Error al agregar participante');
         }
     };
 
-    const handleRemoveParticipant = async (name) => {
-        if (window.confirm(`¿Seguro que quieres eliminar a ${name} del grupo?`)) {
-            try {
-                await removeParticipant(id, name);
-                toast.success(`${name} eliminado del grupo`);
-            } catch (error) {
-                toast.error('Error al eliminar participante');
-            }
-        }
-    };
+    // Removed unused local handleRemoveParticipant
 
     if (!currentGroup && !error) return <div className="p-4 text-center text-slate-400">Cargando...</div>;
 
@@ -100,7 +89,7 @@ const GroupSettings = () => {
                         ) : (
                             <div className="flex-1 flex justify-between items-center p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50">
                                 <span className="text-xl font-display font-bold text-white">{currentGroup.title}</span>
-                                <Button variant="ghost" size="icon" className="text-slate-400 hover:text-indigo-400" onClick={() => setIsEditingTitle(true)}>
+                                <Button variant="ghost" size="icon" className="text-slate-400 hover:text-indigo-400" onClick={() => { setTitle(currentGroup.title); setIsEditingTitle(true); }}>
                                     <Edit2 size={18} />
                                 </Button>
                             </div>
