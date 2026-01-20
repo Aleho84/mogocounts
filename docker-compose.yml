@@ -1,0 +1,27 @@
+services:
+  server:
+    build: ./server
+    container_name: mogocounts-server
+    restart: always
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/mogocounts
+      - PORT=3001
+    ports:
+      - "3001:3001"
+    networks:
+      - aleho-bot_app-network
+
+  client:
+    build: ./client
+    container_name: mogocounts-client
+    restart: always
+    ports:
+      - "4001:4001"
+    depends_on:
+      - server
+    networks:
+      - aleho-bot_app-network
+
+networks:
+  aleho-bot_app-network:
+    external: true

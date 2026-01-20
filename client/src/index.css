@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-slate-900 text-slate-50 antialiased selection:bg-indigo-500 selection:text-white;
+    scrollbar-gutter: stable;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-slate-800/80 backdrop-blur-md border border-slate-700/50;
+  }
+
+  .glass-card {
+    @apply bg-slate-800 border border-slate-700 shadow-xl shadow-black/20;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-sky-400;
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}

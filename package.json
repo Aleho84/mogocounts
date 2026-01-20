@@ -1,0 +1,20 @@
+{
+  "name": "mogocounts",
+  "version": "0.1.0",
+  "description": "MogoCounts, Aplicación para gestionar gastos en grupos.",
+  "scripts": {
+    "docker": "git pull && docker compose up -d --build"
+  },
+  "author": {
+    "name": "Alejandro Abraham",
+    "email": "alejandro.r.abraham@gmail.com",
+    "url": "https://github.com/Aleho84"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aleho84/mogocounts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Aleho84/mogocounts/issues"
+  }
+}
