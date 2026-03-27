@@ -97,8 +97,8 @@ const BalanceView = () => {
                                 <div className="px-4 pb-4 pt-0">
                                     <Button 
                                         onClick={() => handleSettle(debt, idx)} 
-                                        disabled={settlingIdx === idx}
-                                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow shadow-indigo-500/20"
+                                        disabled={settlingIdx !== null}
+                                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow shadow-indigo-500/20 disabled:scale-100 disabled:opacity-50"
                                     >
                                         <CheckCircle2 size={16} className="mr-2" />
                                         {settlingIdx === idx ? 'Saldando...' : 'Marcar como Saldado'}

@@ -23,6 +23,7 @@ const AddExpense = () => {
     const [description, setDescription] = useState(expenseToEdit?.description || '');
     const [payer, setPayer] = useState(expenseToEdit?.payer || '');
     const [involved, setInvolved] = useState(expenseToEdit?.involved || []);
+    const [hasInitializedInvolved, setHasInitializedInvolved] = useState(false);
     const [showSplitModal, setShowSplitModal] = useState(false);
 
     useEffect(() => {
@@ -30,11 +31,12 @@ const AddExpense = () => {
     }, [id, currentGroup, fetchGroup]);
 
     useEffect(() => {
-        // Inicializar involucrados si está vacío y no estamos editando
-        if (!isEditing && currentGroup && currentGroup.participants.length > 0 && involved.length === 0) {
-            setInvolved(currentGroup.participants); // eslint-disable-line react-hooks/set-state-in-effect
+        // Inicializar involucrados SOLO una vez si no estamos editando
+        if (!isEditing && currentGroup && currentGroup.participants.length > 0 && !hasInitializedInvolved) {
+            setInvolved(currentGroup.participants);
+            setHasInitializedInvolved(true);
         }
-    }, [currentGroup, isEditing, involved.length]);
+    }, [currentGroup, isEditing, hasInitializedInvolved]);
 
     useEffect(() => {
         // Solo establecer pagador predeterminado si NO se está editando y el pagador está vacío
@@ -132,8 +134,9 @@ const AddExpense = () => {
                         </div>
 
                         <Button
-                            className="w-full py-4 text-lg bg-indigo-500 hover:bg-indigo-600 text-white"
+                            className="w-full py-4 text-lg bg-indigo-500 hover:bg-indigo-600 text-white disabled:bg-slate-700 disabled:text-slate-400"
                             onClick={() => setShowSplitModal(false)}
+                            disabled={involved.length === 0}
                         >
                             Listo ({involved.length})
                         </Button>

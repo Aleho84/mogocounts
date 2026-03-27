@@ -35,8 +35,13 @@ const CreateGroup = () => {
         e.preventDefault();
         if (!title || !username) return;
 
+        let finalParticipants = [...participants];
+        if (newParticipant.trim() && !participants.includes(newParticipant.trim()) && newParticipant.trim() !== username) {
+            finalParticipants.push(newParticipant.trim());
+        }
+
         try {
-            const group = await createGroup(title, 'ARS', username, participants);
+            const group = await createGroup(title, 'ARS', username, finalParticipants);
             navigate(`/group/${group._id}/expenses`);
         } catch {
             alert('Error creating group');

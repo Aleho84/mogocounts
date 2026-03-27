@@ -175,7 +175,7 @@ const ExpensesList = () => {
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-end gap-1">
-                                    <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-300 block">
+                                    <span className={`text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r block ${expense.isSettlement ? 'from-emerald-400 to-teal-300' : 'from-rose-400 to-red-400'}`}>
                                         ${expense.amount.toLocaleString()}
                                     </span>
                                     {/* Acciones */}
