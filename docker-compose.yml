@@ -9,7 +9,7 @@ services:
     ports:
       - "3003:3003"
     networks:
-      - aleho-bot_app-network
+      - nginx-raspberry_app-network
 
   client:
     build: ./client
@@ -20,8 +20,8 @@ services:
     depends_on:
       - server
     networks:
-      - aleho-bot_app-network
+      - nginx-raspberry_app-network
 
 networks:
-  aleho-bot_app-network:
+  nginx-raspberry_app-network:
     external: true
