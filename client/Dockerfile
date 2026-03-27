@@ -16,6 +16,6 @@ COPY --from=build /app/dist .
 # Copiar conf nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 4001
+EXPOSE 4003
 
 CMD ["nginx", "-g", "daemon off;"]
