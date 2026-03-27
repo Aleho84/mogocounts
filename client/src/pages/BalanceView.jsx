@@ -4,6 +4,7 @@ import { useStore } from '../store/useStore';
 import { MoveRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import Card from '../components/ui/card';
 import Button from '../components/ui/button';
+import Avatar from '../components/ui/avatar';
 
 import { PageTransition } from '../components/ui/PageTransition';
 import GroupNotFound from './GroupNotFound';
@@ -67,9 +68,7 @@ const BalanceView = () => {
                                 <div className="p-4 flex items-center justify-between">
                                     <div className="flex items-center gap-4 flex-1">
                                         <div className="flex flex-col items-center">
-                                            <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 font-bold mb-1">
-                                                {debt.from.charAt(0).toUpperCase()}
-                                            </div>
+                                            <Avatar name={debt.from} isActive={false} className="mb-1" />
                                             <span className="text-xs font-bold text-slate-400">{debt.from}</span>
                                         </div>
 
@@ -81,9 +80,7 @@ const BalanceView = () => {
                                         </div>
 
                                         <div className="flex flex-col items-center">
-                                            <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-300 font-bold mb-1">
-                                                {debt.to.charAt(0).toUpperCase()}
-                                            </div>
+                                            <Avatar name={debt.to} isActive={true} className="mb-1" />
                                             <span className="text-xs font-bold text-indigo-300">{debt.to}</span>
                                         </div>
                                     </div>
@@ -111,7 +108,7 @@ const BalanceView = () => {
 
                 <div className="mt-8 bg-slate-800/50 p-4 rounded-xl text-center max-w-xs mx-auto backdrop-blur-sm border border-slate-700/30">
                     <p className="text-xs text-slate-500">
-                        Este cálculo minimiza las transacciones necesarias. Usa el botón superior para asentar el pago.
+                        Este cálculo minimiza las transacciones necesarias. Marcar como saldado para asentar el pago.
                     </p>
                 </div>
             </div>

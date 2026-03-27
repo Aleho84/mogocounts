@@ -5,6 +5,7 @@ import { AlignLeft, Users, Check, ArrowLeft } from 'lucide-react';
 import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import Card from '../components/ui/card';
+import Avatar from '../components/ui/avatar';
 import { PageTransition } from '../components/ui/PageTransition';
 import GroupNotFound from './GroupNotFound';
 import { toast } from 'sonner';
@@ -123,9 +124,7 @@ const AddExpense = () => {
                                     className={`flex items-center justify-between p-4 rounded-xl cursor-pointer border transition-all ${involved.includes(p) ? 'bg-indigo-500/10 border-indigo-500/50' : 'bg-slate-800 border-transparent hover:bg-slate-700'}`}
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${involved.includes(p) ? 'bg-indigo-500 text-white' : 'bg-slate-700 text-slate-400'}`}>
-                                            {p.charAt(0).toUpperCase()}
-                                        </div>
+                                        <Avatar name={p} isActive={involved.includes(p)} />
                                         <span className={`font-medium ${involved.includes(p) ? 'text-white' : 'text-slate-400'}`}>{p}</span>
                                     </div>
                                     {involved.includes(p) && <Check size={20} className="text-indigo-400" />}
@@ -208,9 +207,7 @@ const AddExpense = () => {
                                         }
                                     `}
                                 >
-                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${payer === p ? 'bg-white text-indigo-500' : 'bg-slate-600 text-slate-200'}`}>
-                                        {p.charAt(0).toUpperCase()}
-                                    </div>
+                                    <Avatar name={p} size="sm" isActive={payer === p} />
                                     <span className="text-sm font-medium">{p}</span>
                                 </button>
                             ))}

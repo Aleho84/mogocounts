@@ -4,6 +4,7 @@ import { useStore } from '../store/useStore';
 import { Share2, Users, Calendar, ArrowLeft, LogOut, Home, Pencil, Trash2 } from 'lucide-react';
 import Card from '../components/ui/card';
 import Button from '../components/ui/button';
+import Avatar from '../components/ui/avatar';
 
 import { PageTransition } from '../components/ui/PageTransition';
 import GroupNotFound from './GroupNotFound';
@@ -67,9 +68,7 @@ const ExpensesList = () => {
                                 className="w-full justify-start text-lg py-6 bg-slate-800 hover:bg-indigo-500/20 hover:border-indigo-500/50 transition-all"
                                 onClick={() => handleUserSelect(participant)}
                             >
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-sky-500 flex items-center justify-center text-white font-bold text-sm mr-4 shrink-0">
-                                    {participant.charAt(0).toUpperCase()}
-                                </div>
+                                <Avatar name={participant} className="mr-4" />
                                 {participant}
                             </Button>
                         ))}
@@ -97,9 +96,7 @@ const ExpensesList = () => {
 
                     {currentUser && (
                         <div className="flex items-center bg-slate-800/80 backdrop-blur-md rounded-full pl-1 pr-3 py-1 border border-slate-700/50 cursor-pointer hover:border-indigo-500/50 transition-colors group" onClick={() => setCurrentUser(null)}>
-                            <div className="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-[10px] font-bold text-white mr-2">
-                                {currentUser.charAt(0).toUpperCase()}
-                            </div>
+                            <Avatar name={currentUser} size="sm" className="mr-2" />
                             <span className="text-xs font-medium text-slate-300 group-hover:text-white mr-2">{currentUser}</span>
                             <LogOut size={12} className="text-slate-500 group-hover:text-rose-400 transition-colors" />
                         </div>
@@ -155,12 +152,10 @@ const ExpensesList = () => {
                             style={{ animationDelay: `${index * 50}ms` }}
                         >
                             <div className="flex justify-between items-center relative z-10">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-sky-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-indigo-500/20 text-shadow-sm">
-                                        {expense.payer.charAt(0).toUpperCase()}
-                                    </div>
-                                    <div onClick={() => navigate(`/group/${id}/add`, { state: { expenseToEdit: expense } })} className="cursor-pointer">
-                                        <h3 className="font-medium text-slate-100 text-lg leading-tight mb-0.5 group-hover:text-indigo-300 transition-colors">
+                                <div className="flex items-center gap-4 min-w-0 pr-2 overflow-hidden">
+                                    <Avatar name={expense.payer} />
+                                    <div onClick={() => navigate(`/group/${id}/add`, { state: { expenseToEdit: expense } })} className="cursor-pointer min-w-0 flex-1">
+                                        <h3 className="font-medium text-slate-100 text-lg leading-tight mb-0.5 group-hover:text-indigo-300 transition-colors truncate block">
                                             {expense.description}
                                         </h3>
                                         <div className="flex items-center text-xs text-slate-400">
