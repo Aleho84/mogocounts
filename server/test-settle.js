@@ -2,7 +2,7 @@ async function test() {
     try {
         const groupId = '69c5bd1419161016501e7377';
         console.log('Testing GET balance...');
-        let res = await fetch(`http://localhost:3001/api/groups/${groupId}/balance`);
+        let res = await fetch(`http://localhost:3003/api/groups/${groupId}/balance`);
         let data = await res.json();
         console.log('Balance:', JSON.stringify(data, null, 2));
 
@@ -10,7 +10,7 @@ async function test() {
             const debt = data.data.debts[0];
             console.log('Attempting to settle debt:', debt);
             
-            const settleRes = await fetch(`http://localhost:3001/api/expenses`, {
+            const settleRes = await fetch(`http://localhost:3003/api/expenses`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -25,7 +25,7 @@ async function test() {
             const settleData = await settleRes.json();
             console.log('Settle Response:', JSON.stringify(settleData, null, 2));
 
-            res = await fetch(`http://localhost:3001/api/groups/${groupId}/balance`);
+            res = await fetch(`http://localhost:3003/api/groups/${groupId}/balance`);
             data = await res.json();
             console.log('Balance After:', JSON.stringify(data, null, 2));
         } else {
