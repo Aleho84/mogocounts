@@ -2,11 +2,24 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// Security Middleware
+app.use(helmet());
+
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1000, // Limit each IP to 1000 requests per `window`
+    message: 'Too many requests from this IP, please try again later.'
+});
+app.use('/api', apiLimiter);
+
+// Parse y CORS
 app.use(cors());
 app.use(express.json());
 
@@ -26,6 +39,9 @@ app.use('/api/expenses', require('./routes/expenses'));
 app.get('/', (req, res) => {
     res.send('CuentasClaras API is running');
 });
+
+// Global Error Handler
+app.use(errorHandler);
 
 // Iniciar Servidor
 app.listen(PORT, () => {

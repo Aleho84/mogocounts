@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { MoveRight, ArrowLeft } from 'lucide-react';
+import { MoveRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import Card from '../components/ui/card';
 import Button from '../components/ui/button';
 
 import { PageTransition } from '../components/ui/PageTransition';
 import GroupNotFound from './GroupNotFound';
+import { toast } from 'sonner';
 
 const BalanceView = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { balance, fetchBalance, currentGroup, fetchGroup, error } = useStore();
+    const { balance, fetchBalance, currentGroup, fetchGroup, error, settleDebt } = useStore();
+    const [settlingIdx, setSettlingIdx] = useState(null);
 
     useEffect(() => {
         if (id) {
@@ -21,6 +23,12 @@ const BalanceView = () => {
     }, [id, currentGroup, fetchGroup, fetchBalance]);
 
     if (error === 'GROUP_NOT_FOUND') return <GroupNotFound />;
+
+    const handleSettle = async (debt, idx) => {
+        setSettlingIdx(idx);
+        await settleDebt(id, debt.from, debt.to, debt.amount);
+        setSettlingIdx(null);
+    };
 
     return (
         <PageTransition className="min-h-[100dvh] bg-slate-900 pb-24">
@@ -39,11 +47,9 @@ const BalanceView = () => {
 
             <div className="px-6">
                 {balance.length === 0 ? (
-                    <Card className="border-dashed border-2 bg-transparent border-slate-700 p-8 text-center">
+                    <Card className="border-dashed border-2 bg-transparent border-slate-700 p-8 text-center mt-8">
                         <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
+                            <CheckCircle2 size={32} />
                         </div>
                         <p className="text-emerald-400 font-medium text-lg mb-1">¡Todo saldado!</p>
                         <p className="text-slate-500 text-sm">No hay deudas pendientes en el grupo.</p>
@@ -57,7 +63,7 @@ const BalanceView = () => {
                         </div>
 
                         {balance.map((debt, idx) => (
-                            <Card key={idx} className="bg-slate-800/80 border-l-4 border-l-indigo-500 hover:bg-slate-800 transition-colors">
+                            <Card key={idx} className="bg-slate-800/80 border-l-4 border-l-indigo-500 hover:bg-slate-800 transition-colors flex flex-col">
                                 <div className="p-4 flex items-center justify-between">
                                     <div className="flex items-center gap-4 flex-1">
                                         <div className="flex flex-col items-center">
@@ -82,11 +88,21 @@ const BalanceView = () => {
                                         </div>
                                     </div>
 
-                                    <div className="ml-4 pl-4 border-l border-slate-700/50">
+                                    <div className="ml-4 pl-4 border-l border-slate-700/50 flex flex-col items-end gap-2">
                                         <span className="font-display text-xl text-emerald-400 font-bold block">
                                             ${debt.amount.toLocaleString()}
                                         </span>
                                     </div>
+                                </div>
+                                <div className="px-4 pb-4 pt-0">
+                                    <Button 
+                                        onClick={() => handleSettle(debt, idx)} 
+                                        disabled={settlingIdx === idx}
+                                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow shadow-indigo-500/20"
+                                    >
+                                        <CheckCircle2 size={16} className="mr-2" />
+                                        {settlingIdx === idx ? 'Saldando...' : 'Marcar como Saldado'}
+                                    </Button>
                                 </div>
                             </Card>
                         ))}
@@ -95,7 +111,7 @@ const BalanceView = () => {
 
                 <div className="mt-8 bg-slate-800/50 p-4 rounded-xl text-center max-w-xs mx-auto backdrop-blur-sm border border-slate-700/30">
                     <p className="text-xs text-slate-500">
-                        Este cálculo minimiza las transacciones necesarias, no sean retrasados y paguen tal como lo indica.
+                        Este cálculo minimiza las transacciones necesarias. Usa el botón superior para asentar el pago.
                     </p>
                 </div>
             </div>

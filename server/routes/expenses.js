@@ -2,87 +2,94 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const Expense = require('../models/Expense');
+const ApiResponse = require('../utils/ApiResponse');
 
 // Middleware de validación
 const validate = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json(ApiResponse.error(errors.array()[0].msg));
     }
     next();
 };
 
 // Crear Gasto
 router.post('/', [
-    check('groupId', 'Group ID is required').not().isEmpty(),
-    check('description', 'Description is required').not().isEmpty(),
+    check('groupId', 'Group ID is required').not().isEmpty().escape(),
+    check('description', 'Description is required').not().isEmpty().escape(),
     check('amount', 'Amount is required and must be a number').isNumeric(),
-    check('payer', 'Payer is required').not().isEmpty(),
+    check('payer', 'Payer is required').not().isEmpty().escape(),
     check('involved', 'Involved participants are required').isArray({ min: 1 })
-], validate, async (req, res) => {
+], validate, async (req, res, next) => {
     try {
-        const { groupId, description, amount, payer, involved } = req.body;
+        const { groupId, description, amount, payer, involved, isSettlement } = req.body;
+        
+        // Sanitizar array de involved
+        const sanitizedInvolved = involved.map(p => String(p).trim());
+
         const expense = new Expense({
             groupId,
             description,
             amount,
             payer,
-            involved
+            involved: sanitizedInvolved,
+            isSettlement: isSettlement || false
         });
         await expense.save();
-
-        // Invalidar Caché del Grupo
+        
+        // Esperamos explícitamente a que el caché se invalide antes de responder al cliente
+        // Esto evita una "condición de carrera" (race condition) donde el frontend pedía
+        // los balances antes de que el hook post-save en MongoDB terminara de impactar.
         await require('../models/Group').findByIdAndUpdate(groupId, { $unset: { debtsLastUpdated: 1 } });
 
-        res.json(expense);
+        res.json(ApiResponse.success(expense));
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 });
 
 // Actualizar Gasto
 router.put('/:id', [
-    check('description', 'Description is required').optional().not().isEmpty(),
+    check('description', 'Description is required').optional().not().isEmpty().escape(),
     check('amount', 'Amount must be a number').optional().isNumeric(),
     check('involved', 'Involved participants must be an array').optional().isArray()
-], validate, async (req, res) => {
+], validate, async (req, res, next) => {
     try {
-        const { description, amount, payer, involved } = req.body;
+        const { description, amount, payer, involved, isSettlement } = req.body;
         const updateData = {};
         if (description) updateData.description = description;
         if (amount) updateData.amount = amount;
         if (payer) updateData.payer = payer;
-        if (involved) updateData.involved = involved;
+        if (typeof isSettlement === 'boolean') updateData.isSettlement = isSettlement;
+        
+        if (involved) {
+            updateData.involved = involved.map(p => String(p).trim());
+        }
 
         const expense = await Expense.findByIdAndUpdate(
             req.params.id,
             updateData,
             { new: true }
         );
-        if (!expense) return res.status(404).json({ error: 'Expense not found' });
+        if (!expense) return res.status(404).json(ApiResponse.error('Expense not found'));
 
-        // Invalidar Caché del Grupo (usando expense.groupId que no cambió, o buscándolo si es necesario)
-        // Dado que hicimos findByIdAndUpdate, 'expense' es el nuevo documento (new: true).
-        await require('../models/Group').findByIdAndUpdate(expense.groupId, { $unset: { debtsLastUpdated: 1 } });
+        // Caché invalidado por el hook pre/post update
 
-        res.json(expense);
+        res.json(ApiResponse.success(expense));
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 });
 
 // Eliminar Gasto
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
     try {
         const expense = await Expense.findByIdAndDelete(req.params.id);
-        if (!expense) return res.status(404).json({ error: 'Expense not found' });
+        if (!expense) return res.status(404).json(ApiResponse.error('Expense not found'));
 
-        // Invalidar Caché del Grupo
-        await require('../models/Group').findByIdAndUpdate(expense.groupId, { $unset: { debtsLastUpdated: 1 } });
-
-        res.json({ message: 'Expense deleted' });
+        res.json(ApiResponse.success({ message: 'Expense deleted' }));
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 });
 
