@@ -6,8 +6,8 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongo:27017/mogocounts
       - PORT=3003
-    ports:
-      - "3003:3003"
+    # ports:
+    #   - "3003:3003"
     networks:
       - nginx-raspberry_app-network
 
@@ -17,8 +17,8 @@ services:
     restart: always
     environment:
       - MONGODB_URI=mongodb://mongo:27017/mogocounts
-    ports:
-      - "4003:4003"
+    # ports:
+    #   - "4003:4003"
     depends_on:
       - server
     networks:
