@@ -17,7 +17,7 @@ const validate = (req, res, next) => {
 router.post('/', [
     check('groupId', 'Group ID is required').not().isEmpty().escape(),
     check('description', 'Description is required').not().isEmpty().escape(),
-    check('amount', 'Amount is required and must be a number').isNumeric(),
+    check('amount', 'Amount is required and must be a positive integer (cents)').isInt({ gt: 0 }).toInt(),
     check('payer', 'Payer is required').not().isEmpty().escape(),
     check('involved', 'Involved participants are required').isArray({ min: 1 })
 ], validate, async (req, res, next) => {
@@ -51,7 +51,7 @@ router.post('/', [
 // Actualizar Gasto
 router.put('/:id', [
     check('description', 'Description is required').optional().not().isEmpty().escape(),
-    check('amount', 'Amount must be a number').optional().isNumeric(),
+    check('amount', 'Amount must be a positive integer (cents)').optional().isInt({ gt: 0 }).toInt(),
     check('involved', 'Involved participants must be an array').optional().isArray()
 ], validate, async (req, res, next) => {
     try {

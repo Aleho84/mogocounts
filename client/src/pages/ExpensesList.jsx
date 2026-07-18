@@ -9,6 +9,7 @@ import Avatar from '../components/ui/avatar';
 import { PageTransition } from '../components/ui/PageTransition';
 import GroupNotFound from './GroupNotFound';
 import { toast } from 'sonner';
+import { formatMoney } from '../lib/money';
 
 const ExpensesList = () => {
     const { id } = useParams();
@@ -171,7 +172,7 @@ const ExpensesList = () => {
                                 </div>
                                 <div className="flex flex-col items-end gap-1">
                                     <span className={`text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r block ${expense.isSettlement ? 'from-emerald-400 to-teal-300' : 'from-rose-400 to-red-400'}`}>
-                                        ${expense.amount.toLocaleString()}
+                                        ${formatMoney(expense.amount)}
                                     </span>
                                     {/* Acciones */}
                                     <div className="flex items-center gap-1 mt-1 z-20 relative">

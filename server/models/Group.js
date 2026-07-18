@@ -21,7 +21,7 @@ const GroupSchema = new mongoose.Schema({
     cachedDebts: [{
         from: String,
         to: String,
-        amount: Number
+        amount: Number // Centavos enteros (igual que Expense.amount)
     }],
     debtsLastUpdated: Date
 });

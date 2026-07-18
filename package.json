@@ -1,6 +1,6 @@
 {
   "name": "mogocounts",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "MogoCounts, Aplicación para gestionar gastos en grupos.",
   "scripts": {
     "backend": "cd server && npm run dev",

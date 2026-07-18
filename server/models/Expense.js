@@ -12,8 +12,16 @@ const ExpenseSchema = new mongoose.Schema({
         trim: true
     },
     amount: {
+        // Monto en CENTAVOS ENTEROS (unidad menor). Ej: $100,50 se guarda como 10050.
+        // Se almacena y calcula en enteros para evitar errores de redondeo de punto
+        // flotante en el cálculo de balances (ver utils/debtGraph.js).
         type: Number,
-        required: true
+        required: true,
+        min: 0,
+        validate: {
+            validator: Number.isInteger,
+            message: 'amount debe ser un entero (centavos)'
+        }
     },
     payer: {
         type: String,

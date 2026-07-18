@@ -1,0 +1,18 @@
+services:
+  mongo:
+    image: mongo:4.4.6
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    environment:
+      - TZ=America/Argentina/Buenos_Aires
+    volumes:
+      - ./mongo_data:/data/db
+    networks:
+      - proxy_net
+
+networks:
+  proxy_net:
+    external: true
+    name: nginx-proxy-network

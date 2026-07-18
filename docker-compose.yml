@@ -6,10 +6,10 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongo:27017/mogocounts
       - PORT=3003
-    # ports:
-    #   - "3003:3003"
+    ports:
+      - 3003:3003
     networks:
-      - nginx-raspberry_app-network
+      - proxy_net
 
   client:
     build: ./client
@@ -17,13 +17,27 @@ services:
     restart: always
     environment:
       - MONGODB_URI=mongodb://mongo:27017/mogocounts
-    # ports:
-    #   - "4003:4003"
+    ports:
+      - 4003:4003
     depends_on:
       - server
     networks:
-      - nginx-raspberry_app-network
+      - proxy_net
+        
+  mongo:
+    image: mongo:4.4.6
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    environment:
+      - TZ=America/Argentina/Buenos_Aires
+    volumes:
+      - ./mongo_data:/data/db
+    networks:
+      - proxy_net
 
 networks:
-  nginx-raspberry_app-network:
+  proxy_net:
     external: true
+    name: nginx-proxy-network

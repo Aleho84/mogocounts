@@ -9,6 +9,7 @@ import Avatar from '../components/ui/avatar';
 import { PageTransition } from '../components/ui/PageTransition';
 import GroupNotFound from './GroupNotFound';
 import { toast } from 'sonner';
+import { formatMoney } from '../lib/money';
 
 const BalanceView = () => {
     const { id } = useParams();
@@ -87,7 +88,7 @@ const BalanceView = () => {
 
                                     <div className="ml-4 pl-4 border-l border-slate-700/50 flex flex-col items-end gap-2">
                                         <span className="font-display text-xl text-emerald-400 font-bold block">
-                                            ${debt.amount.toLocaleString()}
+                                            ${formatMoney(debt.amount)}
                                         </span>
                                     </div>
                                 </div>

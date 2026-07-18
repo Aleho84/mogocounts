@@ -9,6 +9,7 @@ import Avatar from '../components/ui/avatar';
 import { PageTransition } from '../components/ui/PageTransition';
 import GroupNotFound from './GroupNotFound';
 import { toast } from 'sonner';
+import { toCents, fromCents } from '../lib/money';
 
 const AddExpense = () => {
     const { id } = useParams();
@@ -20,7 +21,8 @@ const AddExpense = () => {
     const expenseToEdit = location.state?.expenseToEdit;
     const isEditing = !!expenseToEdit;
 
-    const [amount, setAmount] = useState(expenseToEdit?.amount || '');
+    // El monto guardado está en centavos; en el input se edita en pesos.
+    const [amount, setAmount] = useState(expenseToEdit ? String(fromCents(expenseToEdit.amount)) : '');
     const [description, setDescription] = useState(expenseToEdit?.description || '');
     const [payer, setPayer] = useState(expenseToEdit?.payer || '');
     const [involved, setInvolved] = useState(expenseToEdit?.involved || []);
@@ -70,6 +72,13 @@ const AddExpense = () => {
         e.preventDefault();
         if (!amount || !description || !payer) return;
 
+        // Convertir pesos -> centavos enteros (unidad de la API).
+        const amountInCents = toCents(amount);
+        if (amountInCents <= 0) {
+            toast.error('Ingresá un monto válido mayor a cero.');
+            return;
+        }
+
         if (involved.length === 0) {
             toast.error('No seas retrasado 😒. Debes seleccionar al menos una persona para dividir el gasto.');
             return;
@@ -78,7 +87,7 @@ const AddExpense = () => {
         const expenseData = {
             groupId: id,
             description,
-            amount: parseFloat(amount),
+            amount: amountInCents,
             payer,
             involved: involved
         };
