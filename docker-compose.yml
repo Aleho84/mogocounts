@@ -40,4 +40,4 @@ services:
 networks:
   proxy_net:
     external: true
-    name: nginx-proxy-network
+    name: app-proxy-network
